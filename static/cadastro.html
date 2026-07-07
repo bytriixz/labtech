@@ -41,5 +41,58 @@
       </form>
     </div>
   </div>
+
+  <script>
+    const form = document.getElementById('cadastroForm')
+    const msg = document.getElementById('msg')
+
+    //função chamada após envio do formulário
+    form.addEventListener('submit', async (e) =>{
+        e.preventDefault();
+
+        //obter valores do formulário
+        const fullname = form.fullname.value;
+        const email = form.email.value;
+        const username = form.username.value;
+        const password = form.password.value;
+        const confirmPassword = form.confirm_password.value;
+
+        //confirmação de senha
+        if (password !== confirmPassword) {
+            msg.textContent = "As senhas não coindicem.";
+            msg.style.color = "yellow";
+            return;
+        }
+
+        try {
+            //envia os dados para a função /cadastrarUser no servidor
+            const response = await fetch('/cadastrarUser',{
+                //definições de envio dos dados
+                method: 'POST',
+                headers: {'Content-Type':'application/json' },
+                body: JSON.stringify({fullname, email, username, password })
+            });
+
+            const data = await response.json();
+
+            //mensagem de sucesso e redirecionamento para login
+            if (response.ok){
+                msg.textContent = "Conta criada com sucesso! redirecionando para página de login...";
+                msg.style.color = "green";
+
+                setTimeout(() => window.location.href = "login.html", 1500);
+            }else{
+                msg.textContent = (data.error || "Erro ao criar conta.");
+                msg.style.color = "red";
+            }
+
+        }catch (err) {
+            msg.textContent = "Erro de coneão com o servidor.";
+            msg.style.color = "red";
+        }
+
+    });
+  </script>
+
 </body>
 </html>
