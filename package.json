@@ -18,5 +18,10 @@
   "bugs": {
     "url": "https://github.com/bytriixz/labtech/issues"
   },
-  "homepage": "https://github.com/bytriixz/labtech#readme"
+  "homepage": "https://github.com/bytriixz/labtech#readme",
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express-session": "^1.19.0",
+    "session": "^0.1.0"
+  }
 }

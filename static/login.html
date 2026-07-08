@@ -29,5 +29,48 @@
       </form>
     </div>
   </div>
+
+  <script>
+    //obtendo informações do formulário de login
+    const form = document.getElementById('loginForm')
+    const msg = document.getElementById('msg')
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        //criando variáveis para verificação
+        const username = form.username.value;
+        const password = form.password.value;
+
+        try {
+            //envia os dados para a função /login no servidor
+            const response = await fetch('/login',  {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password})
+            });
+
+            const data = await response.json();
+
+            //mensagem de sucesso e redirecionamento para login
+            if (response.ok) {
+                msg.textContent = "Login Realizado com sucesso.";
+                msg.style.color = "green";
+                setTimeout(() => window.location.href = "/inicio.html", 1000);
+            
+            //mensagem de erro
+            }else {
+                msg.textContent = (data.error) || "Credenciais inválidas."
+                msg.style.color = "red";
+            }
+
+        }catch (err) {
+            msg.textContent = "Erro de conexão com o servidor."
+            msg.style.color = "red";
+        }
+    });
+
+  </script>
+
 </body>
 </html>
